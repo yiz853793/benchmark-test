@@ -140,13 +140,25 @@ The repository is a valuable tool for developers and researchers working in para
 
 \section{Design and Implementation}
 \label{tec}
-Follow several steps and get the result.
-\subsection{Linux Environment}
-in Windows system or MacOS system, install a virtual machine like VMware and install Ubuntu image file.
-install PaSh through this command
+To achieve the desired outcome, adhere to the following sequential steps:
+\subsection{Linux Environment and PaSh}
+\textbf{Virtual Machine Installation:} On your Windows or macOS system, begin by installing a virtual machine software such as VMware. Proceed to set up an Ubuntu image file within this virtual environment.\newline
+\textbf{Installing PaSh:} Install the PaSh by executing the following command in terminal:
 \begin{minted}[fontsize=\footnotesize]{shell}
-./cleanup.sh
+wget https://raw.githubusercontent.com/binpash/pash/main/scripts/up.sh
+sh up.sh
+export PASH_TOP="$PWD/pash/"
+## Run PaSh with echo hi
+"$PASH_TOP/pa.sh" -c "echo hi"
 \end{minted}
+\subsection{Benchmark}
+Install the binpash/benchmark repository by executing the following command in terminal:
+\begin{minted}[fontsize=\footnotesize]{shell}
+git clone https://github.com/binpash/benchmarks.git
+\end{minted}
+For the vast majority of projects, run by imitating the Example section.
+If there are special requirements, refer to the README file.
+
 
 \section{Evaluation}
 \label{eval}
@@ -309,12 +321,33 @@ The project "NVIDIA Performance Testing for Emulation of the Grace CPU"\cite{fan
 They developed a novel tool that consolidates other test suites for more convenient testing of NVIDIA's simulated CPU. 
 Building upon their work, our research further explores how to enhance benchmark efficiency and maintainability through script optimization and the use of high-level programming languages.\newline
 
+\section{Discussion}
+\label{dis}
+
+The file-enc has some bug.
+The first one is that in run.sh input\_dir is wrong and it needs go to the folder inputs.
+Change like this can solve this bug.
+\begin{minted}[fontsize=\footnotesize]{shell}
+# in run.sh wrong in line 9 and 12
+    input_dir="inputs/pcap_data_small" # should go to inputs
+\end{minted}
+
+The second is that in compress\_files.sh and in encrypt\_files.sh and miss a folder too.
+\begin{minted}[fontsize=\footnotesize]{shell}
+# in compress_files.sh, wrong in line 8
+cat $1/$item | gzip -1 -c > $2/$output_name #miss $1
+\end{minted}
+
+\begin{minted}[fontsize=\footnotesize]{shell}
+# in encrypt_files.sh, wrong in line 17
+cat $1/$item | pure_func > $2/$output_name # miss $1 too
+\end{minted}
+After add the folder, scripts can run successfully.
+
 \section{Conclusion}
 \label{conclusion}
-
-\sys's implementation are all open source and available for download:
-\href{https://github.com/something/else}{github.com/something/else}.
-
+The paper test several repositories in benchmark and evaluate the correctness and efficiency. Most of the shell scripts may output in a wrong format which cause the low correct rate, while perfrom well in the large-scale data. \newline
+All the data are open source and available for download: \href{https://github.com/yiz853793/benchmark-test}{https://github.com/yiz853793/benchmark-test.}
 
 %% Bibliography
 {\small

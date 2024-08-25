@@ -1,8 +1,10 @@
 \documentclass[sigplan, screen, 10pt]{acmart}
+
 \renewcommand\footnotetextcopyrightpermission[1]{}
 \settopmatter{printfolios=false,printccs=false,printacmref=false}
 
-\acmYear{2024}\copyrightyear{2024}
+% \acmYear{2024}
+% \copyrightyear{2024}
 \acmConference[Brown CS1380'24]{Brown's Distributed Computing Systems}{Spring, 2024}{Providence, RI}
 % \acmBooktitle{}
 % \acmPrice{}
@@ -32,14 +34,15 @@
 \newcommand{\sx}[1]{(\S\ref{#1})}
 \newcommand{\sys}{{\scshape pSys}\xspace}
 
-\renewcommand{\shortauthors}{J. S. Carberry}
+% \renewcommand{\shortauthors}{J. S. Carberry}
 
 \bibliographystyle{ACM-Reference-Format}
 
 \usepackage{booktabs}
 \usepackage{subcaption}
 
-\title{A BenchMark Test Research}
+\title{Performance Shell Benchmark \newline
+\emph{Correctness, Efficiency, and Beyond}}
 
 \author{Yizhang Xu}
 \affiliation{BUPT}
@@ -63,28 +66,40 @@ Ultimately, our analysis reveals that 82/204 of the shell script outputs are acc
 \section{Introduction}
 \label{intro}
 In the dynamic landscape of computer science, benchmark shell scripts are indispensable tools that frequently engage with complex text problems, playing a pivotal role in the functionality of computer systems.
-It is not uncommon for a system to house hundreds of these scripts, each a thread in the tapestry of system operations.\newline
+It is not uncommon for a system to house hundreds of these scripts, each a thread in the tapestry of system operations.\par
 The core of the issue lies in the imperative to ensure the scripts' accuracy and performance. 
-A deviation from the intended path or a substandard execution mode can lead to inefficiencies and, more critically, to erroneous outcomes that undermine the integrity of the system's operations.\newline
+A deviation from the intended path or a substandard execution mode can lead to inefficiencies and, more critically, to erroneous outcomes that undermine the integrity of the system's operations.\par
 To address these concerns, this paper embarks on a meticulous examination of shell scripts across four repositories. 
-Our approach involves a blend of testing, debugging, and the provision of strategic advice aimed at optimizing the scripts' performance.\newline
-Our findings are both revealing and instructive: out of 138 shell scripts scrutinized, 112 successfully delivered correct results. 
-However, one script's performance stood out, taking over 15 minutes to handle a 1GB text file, underscoring the necessity for performance enhancements, especially when dealing with voluminous data sets.
-% \begin{figure}[t]
-% \centering
-% \includegraphics[width=0.49\textwidth]{./figs/overview.pdf}
-% \caption{
-%   \textbf{\sys overview.}
-%   ..and an overview description
-% }
-% \vspace{-12pt}
-% \label{fig:overview}
-% \end{figure}
+Our approach involves a blend of testing, debugging, and the provision of strategic advice aimed at optimizing the scripts' performance.\par
+Our findings are both revealing and instructive: out of 204 shell scripts tests, 82 successfully delivered correct results. 
+However, one script's performance stood out, taking over 5 minutes to handle a 1GB text file, underscoring the necessity for performance enhancements, especially when dealing with voluminous data sets.
+
+
+\section{Running Example: Doing Something}
+\label{ex}
+
+\textbf{An Example} Walk the reader through an example.
+Use the example to discuss some unique features of this particular domain.
+How is the system used?
+Include \texttt{./commands} and code snippets:
+
+\begin{minted}[fontsize=\footnotesize]{javascript}
+// this is an example of a code snippet
+import { createServer } from 'node:http';
+const server = createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello World!\n');
+});
+// starts a simple http server locally on port 3000
+server.listen(3000, '127.0.0.1', () => {
+  console.log('Listening on 127.0.0.1:3000');
+});
+\end{minted}
 
 \section{Example}
 \label{ex}
 
-\textbf{An Example}
+\textbf{An Example:}
 Take \textbf{oneliners} as an example of our evaluation. To evaluate the execution time of scripts categorized under \textbf{oneliners}, you can follow these steps:
 \subsection{Inputs:}
 \begin{minted}[fontsize=\footnotesize]{shell}
@@ -109,17 +124,17 @@ The cleanup.sh script is designed to perform a cleanup operation by removing dow
 
 \subsection{Results}
 The results of these operations, including timing and verification outcomes, are compiled and recorded in the oneliners.res file.\newline
-executing oneliners bash 08.05.2024 Monday 15:40:23 CST
-./scripts/nfa-regex.sh 2.460 \newline
-./scripts/sort.sh 0.076\newline
-./scripts/top-n.sh 0.309\newline
-./scripts/wf.sh 0.285\newline
-./scripts/spell.sh 0.529\newline
-./scripts/diff.sh 0.138\newline
-./scripts/bi-grams.sh 0.392\newline
-./scripts/set-diff.sh 0.187\newline
-./scripts/sort-sort.sh 0.126\newline
-./scripts/shortest-scripts.sh 0.698
+\texttt{executing oneliners bash 08.05.2024 Monday 15:40:23 CST}
+\texttt{./scripts/nfa-regex.sh 2.460} \newline
+\texttt{./scripts/sort.sh 0.076}\newline
+\texttt{./scripts/top-n.sh 0.309}\newline
+\texttt{./scripts/wf.sh 0.285}\newline
+\texttt{./scripts/spell.sh 0.529}\newline
+\texttt{./scripts/diff.sh 0.138}\newline
+\texttt{./scripts/bi-grams.sh 0.392}\newline
+\texttt{./scripts/set-diff.sh 0.187}\newline
+\texttt{./scripts/sort-sort.sh 0.126}\newline
+\texttt{./scripts/shortest-scripts.sh 0.698}
 
 \section{Background}
 \label{bg}
@@ -130,22 +145,23 @@ At its core, PaSh automatically transforms scripts into a dataflow graph, reveal
 It then recompiles the optimized dataflow graph back into a script, incorporating specific POSIX directives and PaSh's proprietary runtime primitives to ensure the efficiency and correctness of parallel execution.
 PaSh offers a concise annotation language that allows command developers to easily mark the parallel characteristics of their commands. 
 Tested across multiple Unix scripts, PaSh has demonstrated significant performance improvements, affirming its effectiveness in automating the parallelization of scripts.
-\subsection{Shell Benchmarks}
-\href{https://github.com/binpash/benchmarks}{Shell benchmark} repository under binpash on GitHub is a curated collection of 16 benchmark programs and 105 shell scripts enhanced with PaSh. 
+\subsection{Shell Script Benchmarks}
+\href{https://github.com/binpash/benchmarks}{Shell script benchmark} repository under binpash on GitHub is a curated collection of 16 benchmark programs and 105 shell scripts enhanced with PaSh. 
 This resource provides a robust platform for assessing the impact of parallelization on shell script execution. 
 It offers a diverse range of scripts, from simple to complex, enabling a comprehensive evaluation of PaSh's ability to accelerate shell-based workflows.
 The repository is a valuable tool for developers and researchers working in parallel computing within the shell scripting domain.\newline
 
-\textbf{Technique} Shell script, PaSh
+\textbf{Technique} Shell Script, PaSh
 
-\section{Design and Implementation}
+\section{Implementation}
 \label{tec}
 To achieve the desired outcome, adhere to the following sequential steps:
 \subsection{Linux Environment and PaSh}
 \textbf{Virtual Machine Installation:} On your Windows or macOS system, begin by installing a virtual machine software such as VMware. Proceed to set up an Ubuntu image file within this virtual environment.\newline
 \textbf{Installing PaSh:} Install the PaSh by executing the following command in terminal:
 \begin{minted}[fontsize=\footnotesize]{shell}
-wget https://raw.githubusercontent.com/binpash/pash/main/scripts/up.sh
+wget https://raw.githubusercontent.com/binpash/pash/main/scripts
+/up.sh
 sh up.sh
 export PASH_TOP="$PWD/pash/"
 ## Run PaSh with echo hi
@@ -193,9 +209,9 @@ Due to these omissions, the paper is unable to verify the correctness of the she
 
 
 \subsection{Efficiency}
-\subsubsection{covid-mts}
+\textbf{covid-mts:}
 The execution time of the scripts in the covid-mts are detailed in Table 1.
-All the scripts completed their task in 600s when dealing with a 3.4GB file.
+All the scripts completed their task in 300s when dealing with a 3.4GB file.
 The 3.sh cost the most of time, taking 80.081s on average.
 The 1.sh and 2.sh cost neerly the same, separately using 66.137s and 66.069s.
 The 4.sh cost least, using 25.581s.\newline
@@ -203,7 +219,7 @@ The 4.sh cost least, using 25.581s.\newline
 \begin{table}[]
     \centering
     \begin{tabular}{c|c|c|c}
-         \textbf{covid-mts}& \textbf{average time/s} & \textbf{MAX time/s} & \textbf{Min time/s} \\
+         \textbf{covid-mts}& \textbf{AVG/s} & \textbf{MAX time/s} & \textbf{Min time/s} \\
          \hline
          1.sh & 66.137 & 66.589 & 65.766 \\
          2.sh & 66.069 & 66.383 & 65.747\\
@@ -215,41 +231,41 @@ The 4.sh cost least, using 25.581s.\newline
     % \label{tab:my_label}
 \end{table}
 
-\subsubsection{oneliners}
+\textbf{oneliners:}
 The execution times of the scripts in oneliners are detailed in Table 2.
-All scripts completed their tasks in under 600 seconds when processing 334MB of data.
+All scripts completed their tasks in under 300s when processing 334MB of data.
 Among them, the nfa-regex.sh script demonstrated the highest latency, with an average runtime of 126.397s.
 The average execution time of bi-grams.sh is 66.214.
 The execution time of wf.sh, top-n.sh, spell.sh is around 45s, separately 45.137s, 45.090s, 43.705s.
 The average execution time of set-diff.sh is 34.588s.
-The execution time of sort-sort.sh and shortest-scripts.sh is nearly the same, separately 19.489s and 18.005s.
-The sort.sh cost the least, whose average execution time is 13.330s.\newline
+The execution time of sort-sort.sh, shortest-scripts.sh and diff.sh is nearly the same, separately 19.489s, 18.005s and 16.189.
+The sort.sh cost the least, whose average execution time is 13.330s.
 The relatively high runtime of nfa-regex.sh can be attributed to its need to match complex regular expressions over the input data, which is inherently a more resource-intensive task.
 % Meanwhile, the top-n.sh script, which incorporates a sorting operation during its execution, naturally experiences a slowdown compared to the sort.sh script, which is specifically optimized for sorting tasks.
 \begin{table}[]
     \centering
     \begin{tabular}{c|c|c|c}
-        \textbf{oneliners}& \textbf{average time/s} & \textbf{MAX time/s} & \textbf{Min time/s} \\
+        \textbf{oneliners}& \textbf{AVG/s} & \textbf{MAX time/s} & \textbf{Min time/s} \\
          \hline
          nfa-regex.sh & 126.397 & 127.222 & 126.010 \\
-         sort.sh & 13.330 & 13.354 & 13.275 \\
-         top-n.sh & 45.090 & 45.158 & 45.038 \\
-         wf.sh & 45.137 & 45.225 & 45.006 \\
-         spell.sh & 43.705 & 44.169 & 43.531 \\
-         diff.sh & 34.588 & 34.840 & 34.472 \\
          bi-grams.sh & 66.214 & 67.416 & 65.693\\
+         wf.sh & 45.137 & 45.225 & 45.006 \\
+         top-n.sh & 45.090 & 45.158 & 45.038 \\
+         spell.sh & 43.705 & 44.169 & 43.531 \\
          set-diff.sh & 34.588 & 34.840 & 34.472\\
          sort-sort.sh & 19.489 & 19.576 & 19.436 \\
          shortest-scripts.sh & 18.005 & 18.045 & 17.947\\
+         diff.sh & 16.189 & 16.312 & 16.050 \\
+         sort.sh & 13.330 & 13.354 & 13.275 \\
          \hline
     \end{tabular}
     \caption{running time of oneliners scripts}
     % \label{tab:my_label}
 \end{table}
 
-\subsubsection{nlp}
+\textbf{nlp:}
 The execution times of the scripts in oneliners are detailed in Table 3.
-All scripts completed their tasks in under 600 seconds when processing totally 71MB of data.
+All scripts completed their tasks in under 300s when processing totally 71MB of data.
 The 8\_3.3.sh runs the longest time, on average 44.605s. Then execution times of  the 4\_3b.sh, 4\_3.sh, 8.2\_2.sh, 3\_3.sh, 6\_2.sh and 8.3\_2.share are around 30s, separately 32.622s, 31.419s, 30.545s, 30.370s,  28.735s, 27.188s.
 Then the execution times of 3\_2.sh, 8\_1.sh, 1\_1.sh, 6\_1\_2.sh, 2\_1.sh, 8.2\_1.sh are around 20s, separately 24.198s, 23.375s, 21.442s, 20.803s,19.857s, 19.676s.
 Then the execution times of 7\_2.sh and 6\_4.sh are nearly the same, separately 16.928s and 13.906s. Next, the execution times of 6\_5.sh, 6\_3.sh and 6\_1\_1.sh are around 9s, separately 9.415s,  9.008s and 8.359s. 
@@ -258,7 +274,7 @@ Then the execution times of 7\_1.sh, 6\_1.sh, 2\_2.sh, 3\_1.sh, and 6\_7.sh are 
 \begin{table}[]
     \centering
     \begin{tabular}{c|c|c|c}
-         \textbf{nlp}& \textbf{average time/s} & \textbf{MAX time/s} & \textbf{Min time/s} \\
+         \textbf{nlp}& \textbf{AVG/s} & \textbf{MAX time/s} & \textbf{Min time/s} \\
          \hline
          1_1.sh & 21.442 & 21.787 & 21.148 \\
          2_1.sh & 19.857 & 20.050 & 19.664 \\
@@ -289,11 +305,10 @@ Then the execution times of 7\_1.sh, 6\_1.sh, 2\_2.sh, 3\_1.sh, and 6\_7.sh are 
     % \label{tab:my_label}
 \end{table}
 
-\subsubsection{file-enc}
+\textbf{file-enc:}
 The execution times of the scripts in file-enc are detailed in Table 4.
-All scripts completed their tasks in under 600 seconds when processing totally 20GB image.
-The compress\_files.sh runs 443.042s on average.
-The encrypt\_files.sh runs 84.374s on average.\newline
+The compress\_files.sh runs 443.042s on average, whose execution exceeds 300 seconds.
+The encrypt\_files.sh runs 84.374s on average.\par
 The compress\_files.sh compress the .png file using gzip command.
 The execution time of gzip depends on the compression level.
 The encrypt\_files.sh transfrom the file into another file via CBC encrypt mode.
@@ -301,7 +316,7 @@ The encrypt\_files.sh transfrom the file into another file via CBC encrypt mode.
 \begin{table}[]
     \centering
     \begin{tabular}{c|c|c|c}
-        \textbf{file-enc}& \textbf{average time/s} & \textbf{MAX time/s} & \textbf{Min time/s} \\
+        \textbf{file-enc}& \textbf{AVG/s} & \textbf{MAX time/s} & \textbf{Min time/s} \\
          \hline
          compress_files.sh & 443.042 & 443.293 & 442.672 \\
          encrypt_files.sh & 84.374 & 84.676 & 84.068 \\
@@ -313,10 +328,10 @@ The encrypt\_files.sh transfrom the file into another file via CBC encrypt mode.
 
 \section{Related Work}
 \label{related}
-Our research focuses on evaluating and optimizing the performance of benchmark scripts, particularly their efficiency and accuracy when processing large-scale datasets.\newline
+Our research focuses on evaluating and optimizing the performance of benchmark scripts, particularly their efficiency and accuracy when processing large-scale datasets.\par
 This bears similarities to the work conducted by the KISTI team \cite{kim2015webshark}.   
 They also established a standard dataset for assessing and comparing tool performance.
-However, our study emphasizes simplifying the installation, execution, and data collection of benchmark suites through an automated process, especially on the simulated the benchmark shell scripts.\newline
+However, our study emphasizes simplifying the installation, execution, and data collection of benchmark suites through an automated process, especially on the simulated the benchmark shell scripts.\par
 The project "NVIDIA Performance Testing for Emulation of the Grace CPU"\cite{fan2021nvidia}, is directly related to our research.
 They developed a novel tool that consolidates other test suites for more convenient testing of NVIDIA's simulated CPU. 
 Building upon their work, our research further explores how to enhance benchmark efficiency and maintainability through script optimization and the use of high-level programming languages.\newline
@@ -329,7 +344,7 @@ The first one is that in run.sh input\_dir is wrong and it needs go to the folde
 Change like this can solve this bug.
 \begin{minted}[fontsize=\footnotesize]{shell}
 # in run.sh wrong in line 9 and 12
-    input_dir="inputs/pcap_data_small" # should go to inputs
+input_dir="inputs/pcap_data_small" # should go to inputs
 \end{minted}
 
 The second is that in compress\_files.sh and in encrypt\_files.sh and miss a folder too.
@@ -346,8 +361,10 @@ After add the folder, scripts can run successfully.
 
 \section{Conclusion}
 \label{conclusion}
-The paper test several repositories in benchmark and evaluate the correctness and efficiency. Most of the shell scripts may output in a wrong format which cause the low correct rate, while perfrom well in the large-scale data. \newline
+The paper test several repositories in benchmark and evaluate the correctness and efficiency. Most of the shell scripts may output in a wrong format which cause the low correct rate. 
+Most execution time of shell scripts is less than 300s when processing in the large-scale data, showing efficiency of these shell. \par
 All the data are open source and available for download: \href{https://github.com/yiz853793/benchmark-test}{https://github.com/yiz853793/benchmark-test.}
+
 
 %% Bibliography
 {\small

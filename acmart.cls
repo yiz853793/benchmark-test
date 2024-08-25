@@ -2475,7 +2475,8 @@
      \fancyfoot[LO,RE]{\ACM@timestamp}
   \fi
 }%
-\pagestyle{standardpagestyle}
+% \pagestyle{standardpagestyle}
+\pagestyle{empty}
 }
 \newdimen\@folio@wd
 \@folio@wd=\z@

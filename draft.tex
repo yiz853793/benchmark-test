@@ -51,10 +51,10 @@
 \begin{document}
 
 \begin{abstract}
-Shell script\cite{johnson2006shell} is pivotal in tackling diverse real-world issues such as COVID-19 analytics\cite{agbehadji2020review}, NLP(Natural Language Processing)\cite{ofer2021language}, and data analysis. 
+Shell script is pivotal in tackling diverse real-world issues such as COVID-19 analytics, NLP(Natural Language Processing), and data analysis. 
 Yet, they can be prone to failure or inefficiency.
 This paper rigorously assesses the reliability and speed of these benchmark shell scripts.
-For verifying output integrity, this study leverage SHA-256 hashes\cite{manankova2022cryptanalysis} and the diff utility\cite{blum2008linux} for swift and accurate comparisons with the correct outputs.
+For verifying output integrity, this study leverage SHA-256 hashes and the diff utility for swift and accurate comparisons with the correct outputs.
 To measure performance, the time command is employed to capture and log execution times.
 Ultimately, our analysis reveals that 82/204 of the shell script outputs are accurate, demonstrating robust performance even under the demands of large-scale data processing.
 
@@ -65,13 +65,13 @@ Ultimately, our analysis reveals that 82/204 of the shell script outputs are acc
 
 \section{Introduction}
 \label{intro}
-Shell is a command-line interface for interacting with the operating system\cite{newham2005learning}.
+Shell\cite{johnson2006shell} is a command-line interface for interacting with the operating system\cite{newham2005learning}.
 In the dynamic landscape of computer science, shell scripts are indispensable tools that frequently engage with complex text problems, playing a pivotal role in the functionality of computer systems\cite{naik2018learning}.
 It is not uncommon for a system to house hundreds of these scripts, each a thread in the tapestry of system operations\cite{leite2014deploying}\cite{goforth2013role}.
 By leveraging parallelization systems like POSH\cite{raghavan2020posh}, PaSh\cite{vasilakis2021pash}, and DiSh\cite{mustafa2023dish}, among others, computers can significantly enhance script execution speed.\par
 The core of the issue lies in the imperative to ensure the scripts' accuracy and performance. 
 A deviation from the intended path or a substandard execution mode can lead to inefficiencies and, more critically, to erroneous outcomes that undermine the integrity of the system's operations\cite{goforth2013role}.\par
-To address these concerns, this paper embarks on a meticulous examination of shell scripts across four repositories. 
+To address these concerns, this paper embarks on a meticulous examination of shell scripts across four repositories, including covid-mts, oneliners, nlp\cite{ofer2021language} and file-enc. 
 Our approach involves a blend of testing, debugging, and the provision of strategic advice aimed at optimizing the scripts' performance.\par
 Our findings are both revealing and instructive: out of 204 shell scripts tests, 82 successfully delivered correct results. 
 However, one script's performance stood out, taking over 5 minutes to handle a 1GB text file, underscoring the necessity for performance enhancements, especially when dealing with voluminous data sets.
@@ -79,8 +79,15 @@ However, one script's performance stood out, taking over 5 minutes to handle a 1
 \section{Related Work}
 \label{related}
 This study focuses on evaluating and optimizing the performance of benchmark scripts\cite{binpashbenchmark}, particularly their efficiency and accuracy when processing large-scale datasets.\par
+
 PaSh\cite{vasilakis2021pash} is a system for parallelizing shell scripts, and it generates benchmark scripts used for testing in this study.
 PaSh highlights the widespread use of POSIX shell scripts in system management, automation, and data processing, but also points out the inefficiency of their typically sequential execution.\par
+
+PaSh-JIT\cite{mustafa2022parallel} focuses on the real-time aspects of script execution.
+PaSh-JIT dynamically interposes parallelization during the execution of shell scripts.
+It ensures that the performance enhancements achieved through parallelization do not compromise the script's original functionality or correctness.
+This approach aligns with our methodological emphasis on maintaining reliability while enhancing script performance.\par
+
 DiffStream\cite{kallas2020diffstream} is a system designed to facilitate differential testing for stream processing programs.
 DiffStream compares the outputs of different versions of a program or different programs running on the same data streams, highlighting any inconsistencies between them.
 This study follows DiffStream's method and evaluate PaSh benchmark.\par
@@ -177,7 +184,7 @@ To conduct a comprehensive benchmark evaluation, we have selected four packages 
 \item[\textbf{Q2:}] How does the shell script perform when processing extensive datasets?(5.2)
 \end{itemize}
 The run.sh executes all scripts and record the running time.
-The verify.sh compare the hash values of the shell script outputs with the hash values of the expected answers.
+The verify.sh compare the hash values of the shell script outputs with the hash values of the expected answers\cite{manankova2022cryptanalysis}.
 If the scripts complete their tasks in under 600 seconds when dealing with large-scale data, they are deemed efficient.
 The congruence of these hashes will confirm the correctness of the shell script's response.
 \subsection{Correctness}
